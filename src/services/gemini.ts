@@ -225,25 +225,21 @@ export async function getAIOverview(inspirations: string[] = [], existingThemes:
       : 'Total length must stay within 400-600 words.';
 
     const summaryTemplate = isZh
-      ? `summary 必须是一段 markdown 文本，按以下顺序使用 \`### 【小标题】\` 形式分段，每段只保留 1-3 个最关键的点，不要长段解释、不要重复、不要堆砌理论：
-1. ### 【${sectionLabels.conflict}】 — 用一句话概括最本质的心理矛盾或主题。
-2. ### 【${sectionLabels.thoughts}】 — 列出 1-3 条最有影响力的负性/限制性思维（用短句，不要解释）。
-3. ### 【${sectionLabels.patterns}】 — 用两个子条目：
-   - **${sectionLabels.emotion}：** 2-4 个核心情绪词
-   - **${sectionLabels.behavior}：** 1-2 种典型反应模式（如回避、过度规划等）
-4. ### 【${sectionLabels.biases}】 — 指出 1-2 个最关键的认知扭曲类型（如全或无思维、应当化、灾难化等），每个用一句话简要说明。
-5. ### 【${sectionLabels.resources}】 — 提炼 1-2 点用户已经具备的能力/信念。
-6. ### 【${sectionLabels.leverage}】 — 指出 1-2 个最值得改变的关键点（优先级最高）。
-7. ### 【${sectionLabels.reframe}】 — 给出一句更健康、有力量的认知替代表达。`
-      : `summary must be a single markdown string with the following sections in order, each as \`### [Title]\`. Keep only the 1-3 most critical points per section. No long paragraphs, no repetition, no theory dumping:
-1. ### [${sectionLabels.conflict}] — One sentence summarizing the most essential psychological tension or theme.
-2. ### [${sectionLabels.thoughts}] — 1-3 most influential negative/limiting thoughts (short phrases, no explanations).
-3. ### [${sectionLabels.patterns}] — Two sub-bullets:
-   - **${sectionLabels.emotion}:** 2-4 core emotion words
-   - **${sectionLabels.behavior}:** 1-2 typical response patterns (e.g., avoidance, over-planning)
-4. ### [${sectionLabels.biases}] — 1-2 most critical cognitive distortions (e.g., all-or-nothing, shoulds, catastrophizing) with one short sentence each.
-5. ### [${sectionLabels.resources}] — 1-2 capabilities/beliefs the user already has.
-6. ### [${sectionLabels.leverage}] — 1-2 highest-priority change points.
+      ? `summary 必须是一段 markdown 文本，按以下顺序使用 \`### 【小标题】\` 形式分段。每个小标题下面必须是一小段连贯的话（1-3 句），不要使用 bullet point / 列表 / 子条目 / 加粗子项，也不要长段堆砌或重复：
+1. ### 【${sectionLabels.conflict}】 — 用 1-2 句话概括最本质的心理矛盾或主题。
+2. ### 【${sectionLabels.thoughts}】 — 用一小段话（1-3 句）描述最有影响力的负性/限制性思维，自然衔接，不分条。
+3. ### 【${sectionLabels.patterns}】 — 用一小段话（2-3 句）说明 2-4 个核心情绪以及 1-2 种典型反应模式（如回避、过度规划等），融合在同一段里叙述，不要拆成"情绪/行为"两条。
+4. ### 【${sectionLabels.biases}】 — 用一小段话（1-3 句）指出 1-2 个最关键的认知扭曲类型（如全或无思维、应当化、灾难化等）并简要说明其表现。
+5. ### 【${sectionLabels.resources}】 — 用一小段话（1-2 句）提炼用户已经具备的能力或信念。
+6. ### 【${sectionLabels.leverage}】 — 用一小段话（1-2 句）指出最值得改变的 1-2 个关键点（优先级最高）。
+7. ### 【${sectionLabels.reframe}】 — 用一句更健康、有力量的认知替代表达。`
+      : `summary must be a single markdown string with the following sections in order, each as \`### [Title]\`. Under each heading write one short coherent paragraph (1-3 sentences) — never use bullet points, lists, sub-items, or bolded sub-labels. Avoid long paragraphs, repetition, and theory dumping:
+1. ### [${sectionLabels.conflict}] — A short paragraph (1-2 sentences) summarizing the most essential psychological tension or theme.
+2. ### [${sectionLabels.thoughts}] — A short paragraph (1-3 sentences) describing the most influential negative/limiting thoughts in flowing prose — do not split into a list.
+3. ### [${sectionLabels.patterns}] — A short paragraph (2-3 sentences) covering 2-4 core emotions together with 1-2 typical response patterns (e.g., avoidance, over-planning), woven into the same paragraph rather than split into emotion/behavior bullets.
+4. ### [${sectionLabels.biases}] — A short paragraph (1-3 sentences) calling out 1-2 most critical cognitive distortions (e.g., all-or-nothing, shoulds, catastrophizing) with a brief description of how they show up.
+5. ### [${sectionLabels.resources}] — A short paragraph (1-2 sentences) on capabilities/beliefs the user already has.
+6. ### [${sectionLabels.leverage}] — A short paragraph (1-2 sentences) on the 1-2 highest-priority change points.
 7. ### [${sectionLabels.reframe}] — One healthier, more empowering alternative thought.`;
 
     const text = await callDeepSeek([
@@ -265,8 +261,8 @@ Required top-level keys:
 
 Hard constraints:
 - ${lengthRule}
-- Use clear section headings and short bullets — never long paragraphs.
-- Each section keeps only the 1-3 most critical points.
+- Under each \`### [Title]\` write one short coherent paragraph (1-3 sentences). Do NOT use bullet points, numbered lists, sub-items, or bolded sub-labels under section headings.
+- Each section keeps only the 1-3 most critical points, expressed as flowing prose.
 - Avoid: long explanations, repetition, excessive theory.
 - Focus on insight and structure, not exhaustive coverage.
 - If evidence is ambiguous, say so briefly instead of forcing a conclusion.

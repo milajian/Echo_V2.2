@@ -118,7 +118,8 @@
 - **AI 洞察报告改成 CBT 框架结构化输出**（[gemini.ts](src/services/gemini.ts) `getAIOverview`）：
   - System prompt 明确为"CBT-grounded reflective coach"，严格用认知行为疗法的自动思维 / 认知扭曲 / 情绪 / 行为 / 杠杆点框架。
   - 总长度硬约束 400–600 字 / words。
-  - summary 强制按 7 段 `### 【...】` 输出：核心冲突、关键自动思维、情绪与行为模式（情绪 / 行为子项）、认知偏差、已有资源、关键杠杆、替代视角。
+  - summary 强制按 7 段 `### 【...】` 输出：核心冲突、关键自动思维、情绪与行为模式、认知偏差、已有资源、关键杠杆、替代视角。
+  - **每个小标题下输出一小段连贯的话（1-3 句），不再使用 bullet / 列表 / 子条目 / 加粗子项**；情绪与行为模式融在同一段里描述，不拆成"情绪 / 行为"两条。
   - `recommendedActions` 要求是 CBT 风格、针对"关键杠杆"，含 stepByStep + measurement。
   - `getAINextAction` 同步改成 CBT 口径，要求 nextAction / rationale / steps / measurement 四段。
 
