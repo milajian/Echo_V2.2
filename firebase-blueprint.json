@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "Inspiration": {
+      "title": "Inspiration",
+      "description": "A captured spark of thought or AI generated insight card.",
+      "type": "object",
+      "properties": {
+        "content": { "type": "string", "description": "The text content of the inspiration." },
+        "type": { "type": "string", "enum": ["text", "voice"], "description": "Source of inspiration." },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "Category tags." },
+        "userId": { "type": "string", "description": "Owner UID." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["content", "userId", "createdAt"]
+    },
+    "Person": {
+      "title": "Person",
+      "description": "An individual in the user's relationship network.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string", "enum": ["Family", "Intimate", "Friend", "Work", "Other"] },
+        "notes": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "userId", "createdAt"]
+    },
+    "Relationship": {
+      "title": "Relationship",
+      "description": "A connection between two people in the map.",
+      "type": "object",
+      "properties": {
+        "fromId": { "type": "string" },
+        "toId": { "type": "string" },
+        "type": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fromId", "toId", "userId", "createdAt"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "A primary growth objective or AI-driven goal.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed", "archived"] },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "userId", "createdAt"]
+    },
+    "WeeklySummary": {
+      "title": "Weekly Summary",
+      "description": "AI generated weekly reflection.",
+      "type": "object",
+      "properties": {
+        "weekStart": { "type": "string", "description": "YYYY-MM-DD" },
+        "content": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["weekStart", "content", "userId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/inspirations/{inspirationId}": {
+      "schema": "Inspiration",
+      "description": "User's captured inspirations."
+    },
+    "/people/{personId}": {
+      "schema": "Person",
+      "description": "People in the user's network."
+    },
+    "/relationships/{relationshipId}": {
+      "schema": "Relationship",
+      "description": "Defined relationships between people."
+    },
+    "/goals/{goalId}": {
+      "schema": "Goal",
+      "description": "Growth goals and principal missions."
+    },
+    "/summaries/{summaryId}": {
+      "schema": "WeeklySummary",
+      "description": "Weekly AI reflections."
+    }
+  }
+}

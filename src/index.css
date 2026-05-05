@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-stone-50 text-stone-900 antialiased overflow-x-hidden;
+    scrollbar-gutter: stable;
+  }
+
+  html.dark body {
+    background-color: #0c0a09;
+    color: #f5f5f4;
+    color-scheme: dark;
+  }
+}
+
+html.dark .bg-white { background-color: #1c1917 !important; }
+html.dark .bg-stone-50 { background-color: #0c0a09 !important; }
+html.dark .bg-stone-100 { background-color: #292524 !important; }
+html.dark .bg-stone-200 { background-color: #44403c !important; }
+
+html.dark .hover\:bg-white:hover { background-color: #292524 !important; }
+html.dark .hover\:bg-stone-50:hover { background-color: #1c1917 !important; }
+html.dark .hover\:bg-stone-100:hover { background-color: #44403c !important; }
+html.dark .hover\:bg-stone-200:hover { background-color: #57534e !important; }
+
+html.dark .text-stone-900 { color: #fafaf9 !important; }
+html.dark .text-stone-800 { color: #f5f5f4 !important; }
+html.dark .text-stone-700 { color: #e7e5e4 !important; }
+html.dark .text-stone-600 { color: #d6d3d1 !important; }
+html.dark .text-stone-500 { color: #a8a29e !important; }
+html.dark .text-stone-400 { color: #78716c !important; }
+html.dark .text-stone-300 { color: #57534e !important; }
+
+html.dark .hover\:text-stone-900:hover { color: #fafaf9 !important; }
+html.dark .hover\:text-stone-800:hover { color: #f5f5f4 !important; }
+html.dark .hover\:text-stone-700:hover { color: #e7e5e4 !important; }
+html.dark .hover\:text-stone-600:hover { color: #d6d3d1 !important; }
+
+html.dark .border-stone-100 { border-color: #292524 !important; }
+html.dark .border-stone-200 { border-color: #44403c !important; }
+html.dark .border-stone-300 { border-color: #57534e !important; }
+
+html.dark .hover\:border-stone-300:hover { border-color: #57534e !important; }
+html.dark .hover\:border-stone-400:hover { border-color: #78716c !important; }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chat-fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, black 0, black calc(100% - 200px), transparent calc(100% - 40px));
+  mask-image: linear-gradient(to bottom, black 0, black calc(100% - 200px), transparent calc(100% - 40px));
+}
+@media (min-width: 1024px) {
+  .chat-fade-bottom {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+.chat-input-anchor {
+  position: fixed;
+  bottom: var(--mobile-nav-height, 60px);
+  left: 0;
+  right: 0;
+}
+@media (min-width: 1024px) {
+  .chat-input-anchor {
+    position: relative;
+    bottom: 0;
+    left: auto;
+    right: auto;
+  }
+}

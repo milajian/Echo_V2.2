@@ -1,0 +1,109 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Entity Validations ---
+
+    function isValidInspiration(data) {
+      return data.content is string && data.content.size() <= 10000 &&
+             data.userId == request.auth.uid &&
+             data.keys().hasAll(['content', 'userId', 'createdAt']) &&
+             data.keys().size() >= 3;
+    }
+
+    function isValidPerson(data) {
+      return data.name is string && data.name.size() <= 100 &&
+             data.userId == request.auth.uid &&
+             data.keys().hasAll(['name', 'userId', 'createdAt']) &&
+             data.keys().size() >= 3;
+    }
+
+    function isValidRelationship(data) {
+      return data.fromId is string && data.toId is string &&
+             data.userId == request.auth.uid &&
+             data.keys().hasAll(['fromId', 'toId', 'userId', 'createdAt']) &&
+             data.keys().size() >= 4;
+    }
+
+    function isValidGoal(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.userId == request.auth.uid &&
+             data.keys().hasAll(['title', 'userId', 'createdAt']) &&
+             data.keys().size() >= 3;
+    }
+
+    function isValidSummary(data) {
+      return data.weekStart is string && data.content is string &&
+             data.userId == request.auth.uid &&
+             data.keys().hasAll(['weekStart', 'content', 'userId', 'createdAt']) &&
+             data.keys().size() >= 4;
+    }
+
+    // --- Collection Rules ---
+
+    match /inspirations/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidInspiration(incoming()) && isValidId(id);
+      allow update: if isOwner(existing().userId) && isValidInspiration(incoming()) && 
+                    incoming().userId == existing().userId;
+      allow delete: if isOwner(existing().userId);
+    }
+
+    match /people/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidPerson(incoming()) && isValidId(id);
+      allow update: if isOwner(existing().userId) && isValidPerson(incoming()) && 
+                    incoming().userId == existing().userId;
+      allow delete: if isOwner(existing().userId);
+    }
+
+    match /relationships/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidRelationship(incoming()) && isValidId(id);
+      allow update: if isOwner(existing().userId) && isValidRelationship(incoming()) && 
+                    incoming().userId == existing().userId;
+      allow delete: if isOwner(existing().userId);
+    }
+
+    match /goals/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidGoal(incoming()) && isValidId(id);
+      allow update: if isOwner(existing().userId) && isValidGoal(incoming()) && 
+                    incoming().userId == existing().userId;
+      allow delete: if isOwner(existing().userId);
+    }
+
+    match /summaries/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidSummary(incoming()) && isValidId(id);
+      allow update: if isOwner(existing().userId) && isValidSummary(incoming()) && 
+                    incoming().userId == existing().userId;
+      allow delete: if isOwner(existing().userId);
+    }
+  }
+}

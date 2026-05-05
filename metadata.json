@@ -1,0 +1,12 @@
+{
+  "name": "Echo",
+  "description": "A personal growth and relationship management tool featuring an Inspiration Hub, visual Relationship Map, and AI-driven growth tracking.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "AI Insights",
+    "Relationship Graphing",
+    "Growth Tracking"
+  ]
+}
